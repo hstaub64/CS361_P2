@@ -83,7 +83,8 @@ public class NFA implements NFAInterface{
     }
 
     @Override
-    public State getState(String name) {
+    // Temp change to NFAState return type to run tests, change later
+    public NFAState getState(String name) {
         return states.get(name);
     }
 
@@ -134,9 +135,29 @@ public class NFA implements NFAInterface{
     }
 
     @Override
+    // check for three conditions:
+    // 1) more than one transition on the same symbol
+    // 2) no transition for any symbol in sigma
+    // 3) any e transitions
     public boolean isDFA() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isDFA'");
+
+        // much better way to do this, will fix later
+        for (String name : states.keySet()) {
+            for (char symbol : sigma) {
+                if (states.get(name).GetTransitions(symbol) == null) {
+                    return false;
+                } else if (states.get(name).GetTransitions(symbol).size() > 1) {
+                    return false;
+                }
+            }
+            
+            if (states.get(name).GetTransitions('e') != null) {
+                return false;
+            }
+        }
+
+        return true;
     }
+
     
 }
