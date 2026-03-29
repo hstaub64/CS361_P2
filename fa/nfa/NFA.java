@@ -2,6 +2,7 @@ package fa.nfa;
 
 import java.util.Set;
 import java.util.LinkedHashSet; //Linked version is used for consistency of toString methods
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 
 import fa.State;
@@ -108,7 +109,17 @@ public class NFA implements NFAInterface{
 
     @Override
     public Set<NFAState> eClosure(NFAState s) {
-        return s.GetTransitions('e');
+        Set<NFAState> returnSet = new HashSet<>();
+        returnSet.add(s);
+
+        // failing test 3_4
+        for (NFAState state : s.GetTransitions('e')) {
+            if (state != null) {
+                returnSet.add(state);
+            }
+        }
+
+        return returnSet;
     }
 
     @Override
@@ -140,7 +151,6 @@ public class NFA implements NFAInterface{
     // 2) no transition for any symbol in sigma
     // 3) any e transitions
     public boolean isDFA() {
-
         // much better way to do this, will fix later
         for (String name : states.keySet()) {
             for (char symbol : sigma) {
@@ -148,14 +158,11 @@ public class NFA implements NFAInterface{
                     return false;
                 } else if (states.get(name).GetTransitions(symbol).size() > 1) {
                     return false;
+                } else if (symbol == 'e' && states.get(name).GetTransitions(symbol) != null) {
+                    return false;
                 }
             }
-            
-            if (states.get(name).GetTransitions('e') != null) {
-                return false;
-            }
         }
-
         return true;
     }
 
