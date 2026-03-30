@@ -1,6 +1,7 @@
 package fa.nfa;
 
 import java.util.Set;
+import java.util.Stack;
 import java.util.LinkedHashSet; //Linked version is used for consistency of toString methods
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -161,12 +162,19 @@ public class NFA implements NFAInterface{
     @Override
     public Set<NFAState> eClosure(NFAState s) {
         Set<NFAState> returnSet = new HashSet<>();
-        returnSet.add(s);
+        Stack<NFAState> stateStack = new Stack<>();
 
-        // failing test 3_4
-        for (NFAState state : s.GetTransitions('e')) {
-            if (state != null) {
-                returnSet.addAll(eClosure(state));
+        returnSet.add(s);
+        stateStack.push(s);
+
+        while (!stateStack.isEmpty()) {
+            NFAState currentState = stateStack.pop();
+
+            for (NFAState state : currentState.GetTransitions('e')) {
+                if (state != null) {
+                    returnSet.add(state);
+                    stateStack.push(state);
+                }
             }
         }
 

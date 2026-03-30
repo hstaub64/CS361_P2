@@ -1,0 +1,87 @@
+****************
+* CS361_P2 - Nondeterministic Finite Automata
+* CS361 001/002
+* 3/30/26
+* Dean Cunningham, Haylee Staub
+****************
+## OVERVIEW:
+This project is an implementation of a Nondeterministic Finite automata in Java,
+where NFAs can be instantiated as a class and given a defined 5-tuple of language,
+states, start state, final states, and transitions. The NFA can read strings and
+determine if they would be accepted, or the max copies the machine will produce at
+once while operating on a string.
+
+## INCLUDED FILES
+    * NFA.java - source file
+    * NFAState.java - source file
+    * README - this file
+
+## COMPILING AND RUNNING:
+From the directory containing all source files, compile the
+driver class (and all dependencies) with the command:
+* $ javac -cp .:/usr/share/java/junit.jar ./test/nfa/NFATest.java
+
+Run the compiled class file with the command:
+* $ java -cp .:/usr/share/java/junit.jar:/usr/share/java/hamcrest/hamcrest.jar org.junit.runner.JUnitCore test.nfa.NFATest
+
+Console output will give the results after the program finishes.
+## PROGRAM DESIGN AND IMPORTANT CONCEPTS:
+The NFA class is responsible for managing the different parts of 
+the NFAState objects. Each NFAState object contains a HashMap of 
+transitions, which consists of mapping a character to a NFAState. 
+Each NFAState also has the method getTransitions(), which returns 
+a HashSet of NFAStates in order to represent a state having multiple 
+transition states mapped to the same character symbol.
+
+The NFA class outlines all the methods in both the FA and NFA Interface 
+classes. Most importantly, the NFA class contains the method logic 
+for the eClosure() and accepts() methods. The eClosure() method 
+uses a stack to check through each state that can be accessed with 
+an empty character (represented by e). It loops through the current 
+state being accessed and, if it finds an e transition, it adds that 
+state to the list of returned states and pushes that state on top 
+of the stack. When the stack is empty, all possible states that can 
+be accessed on an e have been iterated through.
+
+The accepts() method uses a private method to conduct a BFS using 
+the given string to recreate a trace of the string through the NFA. 
+For each character in the string, the method searches through all 
+possible transitions on that character. If the character can be 
+consumed, it is removed and the machine continues until the string 
+is empty and all characters have been consumed. For each copy in the 
+saved traces that contains the final state, the accepted counter 
+increases. The bfs() method is then called in accepts() and, if the 
+number of accepted traces is greater than 0, the string is an accepted 
+member of the NFA's language.
+
+## TESTING:
+The current code passes all of the given tests. In addition to those tests, 
+two more test classes were written (test4_1-6 and test5_1-6) to test functionality. 
+In test4, bad input was tested by attempting to add transitions on non-existent 
+states and on characters that were not members of the alphabet. This test also 
+included e transitions so that a final state could be reached without any other 
+input and multiple strings were used to check if it correctly accepted and denied 
+strings based on this. The next test, test5, created a DFA and specifically tested 
+the isDFA() method to ensure it returned true when a NFA had no e transitions or 
+more than one transition per character.
+
+## DISCUSSION:
+I was initially worried about using a stack for the eClosure() method, but after 
+looking up the javadocs for it and reminding myself how to use it in practice, it 
+became quite simple. I was able to reference a lot of the code from the first project, 
+which helped a lot with the formatting. The isDFA() method was also much more simple 
+than I had initially anticipated, since we only needed to check 3 criteria. In this 
+implementation, however, I realized it was even less, since we can't quite check that 
+all members of the alphabet are being used because we included the empty character e 
+as a member. Writing the new test cases also helped, since I was able to identify some 
+issues in logic with some of the methods. I did also attempt to do the accepts() method 
+using similar logic to the DFAState's accepts() method, but that didn't work out as 
+well as I hoped. I did learn a new implementation for a BFS, even if it didn't end up 
+being used in the code. -- Haylee
+
+## SOURCES:
+- https://www.geeksforgeeks.org/java/hashmap-computeifabsent-method-in-java-with-examples/
+Used to understand the "computeifabsent" command on hash lists, which I used to procedurally
+add elements to NFAState's transition table as needed.
+- https://docs.oracle.com/javase/8/docs/api/java/util/Stack.html Used to help with creating the stack for the eClosure method.
+- Code referenced from P1
