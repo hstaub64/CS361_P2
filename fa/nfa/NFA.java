@@ -198,17 +198,14 @@ public class NFA implements NFAInterface{
     @Override
     // check for three conditions:
     // 1) more than one transition on the same symbol
-    // 2) no transition for any symbol in sigma
+    // 2) no transition for any symbol in sigma (in this implementation, a DFA will have no transition for e, a part of sigma)
     // 3) any e transitions
     public boolean isDFA() {
-        // much better way to do this, will fix later
         for (String name : states.keySet()) {
             for (char symbol : sigma) {
-                if (states.get(name).GetTransitions(symbol) == null) {
+                if (states.get(name).GetTransitions(symbol).size() > 1) {
                     return false;
-                } else if (states.get(name).GetTransitions(symbol).size() > 1) {
-                    return false;
-                } else if (symbol == 'e' && states.get(name).GetTransitions(symbol) != null) {
+                } else if (symbol == 'e' && !states.get(name).GetTransitions(symbol).isEmpty()) {
                     return false;
                 }
             }

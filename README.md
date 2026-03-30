@@ -11,21 +11,19 @@ states, start state, final states, and transitions. The NFA can read strings and
 determine if they would be accepted, or the max copies the machine will produce at
 once while operating on a string.
 
+## INCLUDED FILES
+    * NFA.java - source file
+    * NFAState.java - source file
+    * README - this file
+
 ## COMPILING AND RUNNING:
-Give the command for compiling the program, the command
-for running the program, and any usage instructions the
-user needs.
-These are command-line instructions for a system like onyx.
-They have nothing to do with Eclipse or any other IDE. They
-must be specific - assume the user has Java installed, but
-has no idea how to compile or run a Java program from the
-command-line.
-e.g.
 From the directory containing all source files, compile the
 driver class (and all dependencies) with the command:
-$ javac Class1.java
+* $ javac -cp .:/usr/share/java/junit.jar ./test/nfa/NFATest.java
+
 Run the compiled class file with the command:
-$ java Class1
+* $ java -cp .:/usr/share/java/junit.jar:/usr/share/java/hamcrest/hamcrest.jar org.junit.runner.JUnitCore test.nfa.NFATest
+
 Console output will give the results after the program finishes.
 ## PROGRAM DESIGN AND IMPORTANT CONCEPTS:
 This is the sort of information someone who really wants to
