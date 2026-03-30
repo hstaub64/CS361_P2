@@ -74,8 +74,59 @@ public class NFA implements NFAInterface{
 
     @Override
     public boolean accepts(String s) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'accepts'");
+        return (bfs(s) > 0) ? true : false;
+    }
+
+    /**
+     * Breadth-First-Search method for NFA
+     * Reads a string starting from the startstate,
+     * keeping track of the max width of all layers.
+     * Returns the maxwidth if accepted,
+     * Returns maxwidth * -1 if not accepted.
+     * Write accepts() and maxCopies() to handle this.
+     * @param s
+     * @return int maxwidth
+     */
+    private int bfs(String s) {
+        int accept = -1;
+        int maxwidth = 1;
+        Set<NFAState> nextLayer = new HashSet<>();
+        Set<NFAState> currentLayer = eClosure(startState);
+        maxwidth = currentLayer.size();
+
+        //Proceed with Breadth First Search until the machine halts
+        //Searches in "layers" representing one character consumed each
+        while (!s.isEmpty() && !currentLayer.isEmpty()) {
+            //Gets all the possible states from reading a character on the current state
+            //next used to prevent null exception on addAll()
+            for (NFAState nfaState : currentLayer) {
+                Set<NFAState> next = nfaState.GetTransitions(s.charAt(0));
+                if (next != null) {
+                    nextLayer.addAll(next);
+                }
+            }
+            //Move down a layer by setting currentLayer to nextLayer
+            currentLayer.clear();
+            for (NFAState nfaState : nextLayer) {
+                currentLayer.addAll(eClosure(nfaState));
+            }
+            maxwidth = Math.max(maxwidth, currentLayer.size());
+            nextLayer.clear();
+            //Iterate the string
+            s = s.substring(1);
+        }
+
+        //The machine has halted. Check if all characters have been read
+        if (!s.isEmpty()) {
+            return maxwidth * -1;
+        }
+        //Check if the machine is in an accept state
+        for (NFAState nfaState : currentLayer) {
+            if (finalStates.contains(nfaState.getName())) {
+                accept = 1;
+            }
+        }
+        return maxwidth * accept;
     }
 
     @Override
@@ -115,7 +166,7 @@ public class NFA implements NFAInterface{
         // failing test 3_4
         for (NFAState state : s.GetTransitions('e')) {
             if (state != null) {
-                returnSet.add(state);
+                returnSet.addAll(eClosure(state));
             }
         }
 
@@ -124,8 +175,7 @@ public class NFA implements NFAInterface{
 
     @Override
     public int maxCopies(String s) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'maxCopies'");
+        return Math.abs(bfs(s));
     }
 
     @Override
