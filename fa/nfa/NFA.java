@@ -221,5 +221,76 @@ public class NFA implements NFAInterface{
         return true;
     }
 
+    public String toString()
+    {
+        // String for Q
+        String returnsString = "";
+        returnsString += "Q = {";
+
+        for (NFAState state : states.values()) 
+        {
+            returnsString += state.getName() + " ";
+        }
+
+        returnsString += "}\n";
+
+        // String for sigma
+        returnsString += "Sigma = {" + sigmaToString(sigma) + "}\n";
+
+        // String for delta
+        returnsString += "delta =\n" + sigmaToString(sigma) + "\n";
+
+        for (NFAState state : states.values()) 
+        {
+            returnsString += state.getName() + " ";
+
+            String currentState = state.getName();
+
+            for (Character c : sigma) 
+            {
+                if (getState(currentState).GetTransitions(c) != null) {
+                    returnsString += getState(currentState).GetTransitions(c) + " ";
+                } else {
+                    returnsString +="[] ";
+                }
+            }
+            returnsString += "\n";
+        }
+
+        // String for q0
+        returnsString += "q0 = " + startState.getName() + "\n";
+
+        // string for F
+        returnsString += "F = {";
+
+        for (String stateName : finalStates) 
+        {
+            returnsString += stateName + " ";
+        }
+
+        returnsString += "}";
+
+        return returnsString;
+    }
+
+    /**
+     * Private helper method to convert the Sigma set
+     * to a string 
+     * 
+     * @param sigma to convert to string
+     * @return a string representation of the characters
+     * in sigma
+     */
+    private String sigmaToString(Set<Character> sigma)
+    {
+        String retVal = "";
+
+        for (Character c : sigma) 
+        {
+            retVal += Character.toString(c) + " ";
+        }
+
+        return retVal;
+    }
     
 }

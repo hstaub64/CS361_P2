@@ -488,4 +488,57 @@ public class NFATest {
 		System.out.println("nfa5 maxCopies done");
 	}
 
+	private NFA nfa6() {
+		NFA nfa = new NFA();
+		
+		nfa.addSigma('1');
+		nfa.addSigma('2');
+		
+		assertTrue(nfa.addState("q0"));
+		assertTrue(nfa.setStart("q0"));
+		assertTrue(nfa.addState("q1"));
+		assertTrue(nfa.addState("q2"));
+		assertTrue(nfa.setFinal("q2"));
+		
+		assertFalse(nfa.addState("q0"));
+		assertFalse(nfa.setStart("q5"));
+		assertFalse(nfa.setFinal("q6"));
+
+		assertTrue(nfa.addTransition("q0", Set.of("q1", "q2"), '1'));
+		assertTrue(nfa.addTransition("q0", Set.of("q0"), 'e'));
+		
+		assertTrue(nfa.addTransition("q1", Set.of("q0", "q2"), '2'));
+		
+		assertTrue(nfa.addTransition("q2", Set.of("q2"), 'e'));
+		
+		assertFalse(nfa.addTransition("q0", Set.of("q7"), '2'));
+		assertFalse(nfa.addTransition("q5", Set.of("q1"), '1'));
+		assertFalse(nfa.addTransition("q2", Set.of("q1"), 'a'));
+		assertFalse(nfa.addTransition("q2", Set.of("q1"), 'b'));
+		
+		
+		return nfa;
+		
+	}
+
+	@Test
+	public void test6_1() {
+		NFA nfa = nfa6();
+
+		String nfaStr = nfa.toString();
+		String expStr = "Q={q0 q1 q2}\n"
+				+ "Sigma = {e 1 2}\n"
+				+ "delta =\n"
+				+ "		e		1		2\n"
+				+ "q0 [q0]	[q1,q2]		[]\n"
+				+ "q1 []	   []	 [q0, q2]\n"
+				+ "q2 [q2] 	   []       []\n"
+				+ "q0 = q0\n"
+				+ "F={q2}\n";
+
+				System.out.println(nfaStr);
+
+		assertTrue(nfaStr.replaceAll("\\s", "").equals(expStr.replaceAll("\\s", "")));
+		System.out.println("nfa toString pass");
+	}
 }

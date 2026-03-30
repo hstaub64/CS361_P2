@@ -56,14 +56,15 @@ member of the NFA's language.
 
 ## TESTING:
 The current code passes all of the given tests. In addition to those tests, 
-two more test classes were written (test4_1-6 and test5_1-6) to test functionality. 
+three more test classes were written (test4_1-6, test5_1-6, and test6_1) to test functionality. 
 In test4, bad input was tested by attempting to add transitions on non-existent 
 states and on characters that were not members of the alphabet. This test also 
 included e transitions so that a final state could be reached without any other 
 input and multiple strings were used to check if it correctly accepted and denied 
 strings based on this. The next test, test5, created a DFA and specifically tested 
 the isDFA() method to ensure it returned true when a NFA had no e transitions or 
-more than one transition per character.
+more than one transition per character. Lastly, test6 was used to test the NFA 
+toString() method.
 
 ## DISCUSSION:
 I was initially worried about using a stack for the eClosure() method, but after 
