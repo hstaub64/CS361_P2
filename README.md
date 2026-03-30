@@ -1,22 +1,15 @@
-# CS361_P2
-
 ****************
-* P2
-* CS361 002
+* CS361_P2 - Nondeterministic Finite Automata
+* CS361 001/002
 * 3/30/26
 * Dean Cunningham, Haylee Staub
 ****************
 ## OVERVIEW:
-Concisely explain what the program does. If this exceeds a couple
-of sentences, you're going too far. The details go in other
-sections.
-INCLUDED FILES:
-List the files required for the project with a brief
-explanation of why each is included.
-e.g.
-* Class1.java - source file
-* Class2.java - source file
-* README - this file
+This project is an implementation of a Nondeterministic Finite automata in Java,
+where NFAs can be instantiated as a class and given a defined 5-tuple of language,
+states, start state, final states, and transitions. The NFA can read strings and
+determine if they would be accepted, or the max copies the machine will produce at
+once while operating on a string.
 
 ## COMPILING AND RUNNING:
 Give the command for compiling the program, the command
