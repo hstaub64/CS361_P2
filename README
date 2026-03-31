@@ -48,11 +48,12 @@ the given string to recreate a trace of the string through the NFA.
 For each character in the string, the method searches through all 
 possible transitions on that character. If the character can be 
 consumed, it is removed and the machine continues until the string 
-is empty and all characters have been consumed. For each copy in the 
-saved traces that contains the final state, the accepted counter 
-increases. The bfs() method is then called in accepts() and, if the 
-number of accepted traces is greater than 0, the string is an accepted 
-member of the NFA's language.
+is empty and all characters have been consumed. If the machine has
+halted, all characters have been consumed, and at least one copy of
+the machine is in an accept state, the machine will return a positive
+number, indicating the string has been accepted and is a member of
+the NFA's language.
+
 
 ## TESTING:
 The current code passes all of the given tests. In addition to those tests, 
@@ -79,6 +80,15 @@ issues in logic with some of the methods. I did also attempt to do the accepts()
 using similar logic to the DFAState's accepts() method, but that didn't work out as 
 well as I hoped. I did learn a new implementation for a BFS, even if it didn't end up 
 being used in the code. -- Haylee
+
+I was able to figure out how to set up the NFA and NFAState class by reviewing work
+from P1. I wasn't fully sure how to tackle the NFA-specific functions at first, but
+once eclosure() was written it clicked and I was able to set up my DFS method. I based
+it on the formal trace of an NFA, where you complete the trace where rows represent
+characters read and columns represent different machines. Debugging the tests step by
+step enabled me to check edge cases and catch a few issues with the BFS. I feel like I
+have a lot better of an understanding of the finished code this time compared to P1,
+now that we've gone a bit further with the concept. --Dean
 
 ## SOURCES:
 - https://www.geeksforgeeks.org/java/hashmap-computeifabsent-method-in-java-with-examples/

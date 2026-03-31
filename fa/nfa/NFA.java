@@ -136,7 +136,6 @@ public class NFA implements NFAInterface{
     }
 
     @Override
-    // Temp change to NFAState return type to run tests, change later
     public NFAState getState(String name) {
         return states.get(name);
     }
